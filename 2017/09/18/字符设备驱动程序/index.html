@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>字符设备驱动程序 | 人要有梦想，万一实现了呢</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="驱动模块 加载分为 静态加载和动态加载。静态加载是在编译内核的时候，就编译进内核，开机后会自动加载。动态加载是将驱动编译成模块，使用insmod命令加载。加到启动脚本里让其开机自动加载，算是一种技巧，不是标准的方法。二期毕业班，记不到了。   本作品采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可，欢迎转载，但转载请注明来自 www.cetiic.cn  ，并保持转载后文">
+  <meta name="description" content="###一个linux内核模块一般由以下几个部分组成： ####模块加载函数：module_init(hello_init);通过insmod加载驱动时候，模块的加载函数会自动被内核执行，完成模块的初始化工作；  ####驱动模块 加载分为 静态加载和动态加载。静态加载是在编译内核的时候，就编译进内核，开机后会自动加载。动态加载是将驱动编译成模块，使用insmod命令加载。加到启动脚本里让其开机自动">
 <meta name="keywords" content="2440驱动">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字符设备驱动程序">
 <meta property="og:url" content="http://yoursite.com/2017/09/18/字符设备驱动程序/index.html">
 <meta property="og:site_name" content="人要有梦想，万一实现了呢">
-<meta property="og:description" content="驱动模块 加载分为 静态加载和动态加载。静态加载是在编译内核的时候，就编译进内核，开机后会自动加载。动态加载是将驱动编译成模块，使用insmod命令加载。加到启动脚本里让其开机自动加载，算是一种技巧，不是标准的方法。二期毕业班，记不到了。   本作品采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可，欢迎转载，但转载请注明来自 www.cetiic.cn  ，并保持转载后文">
+<meta property="og:description" content="###一个linux内核模块一般由以下几个部分组成： ####模块加载函数：module_init(hello_init);通过insmod加载驱动时候，模块的加载函数会自动被内核执行，完成模块的初始化工作；  ####驱动模块 加载分为 静态加载和动态加载。静态加载是在编译内核的时候，就编译进内核，开机后会自动加载。动态加载是将驱动编译成模块，使用insmod命令加载。加到启动脚本里让其开机自动">
 <meta property="og:locale" content="chinese">
 <meta property="og:image" content="https://i.creativecommons.org/l/by/4.0/88x31.png">
-<meta property="og:updated_time" content="2017-09-18T09:20:17.443Z">
+<meta property="og:updated_time" content="2017-09-19T02:41:58.857Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="字符设备驱动程序">
-<meta name="twitter:description" content="驱动模块 加载分为 静态加载和动态加载。静态加载是在编译内核的时候，就编译进内核，开机后会自动加载。动态加载是将驱动编译成模块，使用insmod命令加载。加到启动脚本里让其开机自动加载，算是一种技巧，不是标准的方法。二期毕业班，记不到了。   本作品采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可，欢迎转载，但转载请注明来自 www.cetiic.cn  ，并保持转载后文">
+<meta name="twitter:description" content="###一个linux内核模块一般由以下几个部分组成： ####模块加载函数：module_init(hello_init);通过insmod加载驱动时候，模块的加载函数会自动被内核执行，完成模块的初始化工作；  ####驱动模块 加载分为 静态加载和动态加载。静态加载是在编译内核的时候，就编译进内核，开机后会自动加载。动态加载是将驱动编译成模块，使用insmod命令加载。加到启动脚本里让其开机自动">
 <meta name="twitter:image" content="https://i.creativecommons.org/l/by/4.0/88x31.png">
   
     <link rel="alternative" href="/atom.xml" title="人要有梦想，万一实现了呢" type="application/atom+xml">
@@ -214,7 +214,9 @@
           
           </div>
           
-        <p>驱动模块 加载分为 静态加载和动态加载。<br>静态加载是在编译内核的时候，就编译进内核，开机后会自动加载。<br>动态加载是将驱动编译成模块，使用insmod命令加载。<br>加到启动脚本里让其开机自动加载，算是一种技巧，不是标准的方法。<br>二期毕业班，记不到了。</p>
+        <p>###一个linux内核模块一般由以下几个部分组成：</p>
+<p>####模块加载函数：<br><code>module_init(hello_init);</code><br>通过insmod加载驱动时候，模块的加载函数会自动被内核执行，完成模块的初始化工作； </p>
+<p>####<br>驱动模块 加载分为 静态加载和动态加载。<br>静态加载是在编译内核的时候，就编译进内核，开机后会自动加载。<br>动态加载是将驱动编译成模块，使用insmod命令加载。<br>加到启动脚本里让其开机自动加载，算是一种技巧，不是标准的方法。<br>二期毕业班，记不到了。</p>
 <hr>
 <p><a rel="external" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:10" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br></p>
 <p>本作品采用<a rel="external" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可，欢迎转载，但转载请注明来自 <a href="http://www.cetiic.cn/" target="_blank" rel="external">www.cetiic.cn</a>  ，并保持转载后文章内容的完整。本人保留所有版权相关权利。</p>
@@ -491,15 +493,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">2440驱动</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">linux平台搭建</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">心随意动</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">2440驱动</a>
               </li>
             
             <div class="clearfix"></div>
