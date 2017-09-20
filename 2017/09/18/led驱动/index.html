@@ -17,7 +17,7 @@
 <meta property="og:description" content="字符设备驱动之hello、led等；">
 <meta property="og:locale" content="chinese">
 <meta property="og:image" content="https://i.creativecommons.org/l/by/4.0/88x31.png">
-<meta property="og:updated_time" content="2017-09-20T10:02:05.892Z">
+<meta property="og:updated_time" content="2017-09-20T10:13:06.460Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LED驱动">
 <meta name="twitter:description" content="字符设备驱动之hello、led等；">
@@ -211,12 +211,15 @@
           
           <div id="toc" class="toc-article">
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#最简单的驱动-hello-呵呵呵"><span class="toc-text">最简单的驱动 hello_呵呵呵</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hello-drv"><span class="toc-text">hello_drv</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#最简单的驱动-hello-呵呵呵"><span class="toc-text">最简单的驱动 hello_呵呵呵</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hello-drv"><span class="toc-text">hello_drv</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#hellodrv-test"><span class="toc-text">hellodrv_test</span></a></li></ol></li></ol>
           </div>
           
         <p>字符设备驱动之hello、led等；<a id="more"></a></p>
 <h3 id="最简单的驱动-hello-呵呵呵"><a href="#最简单的驱动-hello-呵呵呵" class="headerlink" title="最简单的驱动 hello_呵呵呵"></a>最简单的驱动 hello_呵呵呵</h3><h4 id="hello-drv"><a href="#hello-drv" class="headerlink" title="hello_drv"></a>hello_drv</h4><p>之前为了省事在sublime 中编写代码，错误压根发现不了，后来用到source insight关键字 彩色标注，相对好多了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#include &lt;linux/module.h&gt;</span></div><div class="line"><span class="comment">#include &lt;linux/kernel.h&gt;</span></div><div class="line"><span class="comment">#include &lt;linux/fs.h&gt;</span></div><div class="line"><span class="comment">#include &lt;linux/init.h&gt;</span></div><div class="line"><span class="comment">#include &lt;linux/delay.h&gt;</span></div><div class="line"><span class="comment">#include &lt;asm/uaccess.h&gt;</span></div><div class="line"><span class="comment">#include &lt;asm/irq.h&gt;</span></div><div class="line"><span class="comment">#include &lt;asm/io.h&gt;</span></div><div class="line"><span class="comment">#include &lt;asm/arch/regs-gpio.h&gt;</span></div><div class="line"><span class="comment">#include &lt;asm/hardware.h&gt;</span></div><div class="line"></div><div class="line">static int hello_drv_open(struct inode *inode, struct file *file)</div><div class="line">&#123;</div><div class="line">	printk(<span class="string">" this is my first devices\n"</span>);</div><div class="line">	<span class="built_in">return</span> 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">static ssize_t hello_drv_write(struct file *file, const char __user *buf, size_t count, loff_t * ppos)</div><div class="line">&#123;</div><div class="line"></div><div class="line"></div><div class="line">	printk(<span class="string">" hello_drv_write000000\n"</span>);</div><div class="line">	<span class="built_in">return</span> 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">static struct file_operations	hello_drv_fops = &#123;</div><div class="line">    .owner  =  THIS_MODULE,    /* 这是一个宏，推向编译模块时自动创建的__this_module变量 */</div><div class="line">	.open   =  hello_drv_open,</div><div class="line">	.write  =  hello_drv_write,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">static int hello_drv_init(void)</div><div class="line">&#123;</div><div class="line">	register_chrdev(0, <span class="string">"hello_drv"</span>, &amp;hello_drv_fops); // 注册, 告诉内核</div><div class="line">&#125;</div><div class="line"></div><div class="line">static void hello_drv_exit(void)</div><div class="line">&#123;</div><div class="line">	unregister_chrdev(0, <span class="string">"hello_drv"</span>); // 卸载</div><div class="line">&#125;</div><div class="line"></div><div class="line">module_init(hello_drv_init);</div><div class="line">module_exit(hello_drv_exit);</div><div class="line"></div><div class="line"></div><div class="line">MODULE_LICENSE(<span class="string">"GPL"</span>);</div></pre></td></tr></table></figure></p>
-<p>对应的Makefile<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># KERN_DIR = /work/system/linux-2.6.22.6</span></div><div class="line"></div><div class="line">all:</div><div class="line">	make -C $(KERN_DIR) M=`<span class="built_in">pwd</span>` modules </div><div class="line"></div><div class="line">clean:</div><div class="line">	make -C $(KERN_DIR) M=`<span class="built_in">pwd</span>` modules clean</div><div class="line">	rm -rf modules.order</div><div class="line"></div><div class="line">obj-m	+= hello_drv.o <span class="comment">#</span></div></pre></td></tr></table></figure></p>
+<p>对应的Makefile<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> KERN_DIR = /work/system/linux-2.6.22.6</div><div class="line"></div><div class="line">all:</div><div class="line">	make -C $(KERN_DIR) M=`<span class="built_in">pwd</span>` modules </div><div class="line"></div><div class="line">clean:</div><div class="line">	make -C $(KERN_DIR) M=`<span class="built_in">pwd</span>` modules clean</div><div class="line">	rm -rf modules.order</div><div class="line"></div><div class="line">obj-m	+= hello_drv.o</div></pre></td></tr></table></figure></p>
+<p>然后 make，一个驱动做完，会出现各种错误，慢慢改吧</p>
+<h4 id="hellodrv-test"><a href="#hellodrv-test" class="headerlink" title="hellodrv_test"></a>hellodrv_test</h4><p>最简单的一个测试程序，毫不拖泥带水<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#include &lt;sys/types.h&gt;</span></div><div class="line"><span class="comment">#include &lt;sys/stat.h&gt;</span></div><div class="line"><span class="comment">#include &lt;fcntl.h&gt;</span></div><div class="line"><span class="comment">#include &lt;stdio.h&gt;</span></div><div class="line"></div><div class="line"></div><div class="line">int main(int argc, char **argv)</div><div class="line">&#123;</div><div class="line">	int fd;</div><div class="line">	int val = 1;</div><div class="line">	fd = open(<span class="string">"/dev/xyz"</span>, O_RDWR);</div><div class="line">	<span class="keyword">if</span> (fd &lt; 0)</div><div class="line">	&#123;</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"can't open!\n"</span>);</div><div class="line">	&#125;</div><div class="line">	write(fd, &amp;val, 4);</div><div class="line">	<span class="built_in">return</span> 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对这个.c的gun c函数进行编译，在ubunt中<br><code>arm-linux-gcc -o hellodrv_test hellodrv_test.c</code><br>编译完成后，进入调试 发现  ./hellodrv_test 压根没反应 出现/cannot open<br>创建设备节点，字符设备 主设备号通过 cat /proc/devices 发现是252<br><code>mknod /dev/xyz c 252 0</code><br>此时 ./hellodrv_test 会出现驱动打印的数据</p>
 <p>驱动模块 加载分为 静态加载和动态加载。<br>静态加载是在编译内核的时候，就编译进内核，开机后会自动加载。<br>动态加载是将驱动编译成模块，使用insmod命令加载。<br>加到启动脚本里让其开机自动加载，算是一种技巧，不是标准的方法。<br>二期毕业班，记不到了。</p>
 <hr>
 <p><a rel="external" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:10" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br></p>
@@ -335,15 +338,6 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/09/18/字符设备驱动程序/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          字符设备驱动程序
-        
-      </div>
-    </a>
-  
   
     <a href="/2017/09/18/模板/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">博文建设常用模板知识</div>
@@ -373,7 +367,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#最简单的驱动-hello-呵呵呵"><span class="toc-number">1.</span> <span class="toc-text">最简单的驱动 hello_呵呵呵</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hello-drv"><span class="toc-number">1.1.</span> <span class="toc-text">hello_drv</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#最简单的驱动-hello-呵呵呵"><span class="toc-number">1.</span> <span class="toc-text">最简单的驱动 hello_呵呵呵</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hello-drv"><span class="toc-number">1.1.</span> <span class="toc-text">hello_drv</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#hellodrv-test"><span class="toc-number">1.2.</span> <span class="toc-text">hellodrv_test</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -499,19 +493,19 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">linux平台搭建</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">搞github心得</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">2440驱动</a>
+                <a href="javascript:void(0)" class="js-tag color5">linux平台搭建</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">心随意动</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">2440驱动</a>
               </li>
             
             <div class="clearfix"></div>
